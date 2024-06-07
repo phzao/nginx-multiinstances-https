@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  mongo:
+    image: mongo:3.6
+    container_name: mongodb-proz
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - "./database:/data/db"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+  rabbit:
+    image: rabbitmq:3.7.4-management
+    hostname: 'rabbiteb'
+    container_name: rabbit-proz
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${AMQP_USER}
+      RABBITMQ_DEFAULT_PASS: ${AMQP_PASSWORD}
+      VIRTUAL_HOST: ${AMQP_VHOST}
+
+  web:
+    build: ./nginx
+    container_name: apiprozeducacao-web
+    working_dir: /application
+    restart: unless-stopped
+    volumes:
+        - ./:/application
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+      - "443:443"
+
