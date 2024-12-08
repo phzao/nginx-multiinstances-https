@@ -2,7 +2,7 @@ version: '3.1'
 services:
   mongo:
     image: mongo:3.6
-    container_name: mongodb-proz
+    container_name: mongodb-prod
     restart: unless-stopped
     ports:
       - '27017:27017'
@@ -15,7 +15,7 @@ services:
   rabbit:
     image: rabbitmq:3.7.4-management
     hostname: 'rabbiteb'
-    container_name: rabbit-proz
+    container_name: rabbit-prod
     restart: unless-stopped
     ports:
       - "5672:5672"
@@ -27,7 +27,7 @@ services:
 
   web:
     build: ./nginx
-    container_name: apiprozeducacao-web
+    container_name: web-prod
     working_dir: /application
     restart: unless-stopped
     volumes:
